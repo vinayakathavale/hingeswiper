@@ -163,14 +163,19 @@ class HingeAutomator(AndroidDeviceConnector):
             return False
             
         try:
+            # Click on the text input box (approximate position)
+            self.execute_command(f"input tap 540 1500")
+            time.sleep(1)  # Wait for keyboard to appear
+            
             # Type the comment
             self.execute_command(f"input text '{comment}'")
-            time.sleep(1)
+            time.sleep(3)
             
-            # Click the send button (you might need to adjust coordinates)
-            send_x = self.screen_width - 100  # Approximate position
-            send_y = self.screen_height - 100
-            self.execute_command(f"input tap {send_x} {send_y}")
+            self.execute_command(f"input tap 870 2300")
+
+            time.sleep(1)
+            self.execute_command(f"input tap 540 1600")
+
             time.sleep(2)
             return True
         except Exception as e:
