@@ -1,16 +1,15 @@
 from android_connector import AndroidDeviceConnector
 import time
-import random
-import re
-from typing import Optional, Dict, List
+from typing import Optional, Dict
 import logging
 import base64
 from openai import OpenAI
 import os
-import json
 from PIL import Image
 from shape_matcher import find_shape_coordinates
 import numpy as np
+from io import BytesIO
+
 
 class HingeAutomator(AndroidDeviceConnector):
     HINGE_PACKAGE = "co.hinge.app"
@@ -53,46 +52,6 @@ class HingeAutomator(AndroidDeviceConnector):
             self.logger.error(f"Error launching Hinge: {e}")
             return False
     
-    def swipe_right(self) -> bool:
-        """Perform a right swipe (like)"""
-        if not self.connected or not self.screen_width or not self.screen_height:
-            return False
-        
-        try:
-            # Calculate swipe coordinates
-            start_x = self.screen_width // 2
-            start_y = self.screen_height // 2
-            end_x = self.screen_width
-            end_y = start_y
-            
-            # Perform swipe
-            self.execute_command(f"input swipe {start_x} {start_y} {end_x} {end_y} 500")
-            time.sleep(random.uniform(1, 2))  # Random delay between swipes
-            return True
-        except Exception as e:
-            self.logger.error(f"Error performing right swipe: {e}")
-            return False
-    
-    def swipe_left(self) -> bool:
-        """Perform a left swipe (pass)"""
-        if not self.connected or not self.screen_width or not self.screen_height:
-            return False
-        
-        try:
-            # Calculate swipe coordinates
-            start_x = self.screen_width // 2
-            start_y = self.screen_height // 2
-            end_x = 0
-            end_y = start_y
-            
-            # Perform swipe
-            self.execute_command(f"input swipe {start_x} {start_y} {end_x} {end_y} 500")
-            time.sleep(random.uniform(1, 2))  # Random delay between swipes
-            return True
-        except Exception as e:
-            self.logger.error(f"Error performing left swipe: {e}")
-            return False
-    
     def analyze_screenshot(self, screenshot) -> Optional[Dict]:
         """Analyze screenshot using shape matching to find the heart button and OpenAI Vision to analyze profile"""
         try:
@@ -108,7 +67,6 @@ class HingeAutomator(AndroidDeviceConnector):
                 return None
 
             # Convert PIL Image to PNG bytes
-            from io import BytesIO
             img_byte_arr = BytesIO()
             screenshot.save(img_byte_arr, format='PNG')
             img_byte_arr = img_byte_arr.getvalue()
@@ -145,12 +103,6 @@ class HingeAutomator(AndroidDeviceConnector):
                 "heart_button": {
                     "x": center[0],
                     "y": center[1]
-                },
-                "profile_info": {
-                    "name": None,  # Shape matching doesn't extract text
-                    "age": None,
-                    "location": None,
-                    "prompts": []
                 },
                 "suggested_comment": suggested_comment
             }
