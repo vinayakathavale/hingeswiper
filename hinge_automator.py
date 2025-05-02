@@ -9,7 +9,7 @@ from PIL import Image
 from shape_matcher import find_shape_coordinates
 import numpy as np
 from io import BytesIO
-
+import re
 
 class HingeAutomator(AndroidDeviceConnector):
     HINGE_PACKAGE = "co.hinge.app"
@@ -82,7 +82,7 @@ class HingeAutomator(AndroidDeviceConnector):
                         "content": [
                             {
                                 "type": "text",
-                                "text": "Analyze this Hinge profile and suggest a personalized comment. Look for interesting details in their photos, prompts, and bio. The comment should be engaging, specific to their profile, and show genuine interest. Keep it concise (1-2 sentences max)."
+                                "text": "Analyze this Hinge profile and suggest a short, personalized, and flirty roast that would be memorable and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio. The roast should be playful, specific to their profile, and show flirtatious interest. Keep it concise (6-10 words). Only allowed punctuation is '!', ',', '.','?'"
                             },
                             {
                                 "type": "image_url",
@@ -161,20 +161,27 @@ class HingeAutomator(AndroidDeviceConnector):
         """Post a comment after liking"""
         if not self.connected:
             return False
-            
         try:
             # Click on the text input box (approximate position)
             self.execute_command(f"input tap 540 1500")
             time.sleep(1)  # Wait for keyboard to appear
             
             # Type the comment
-            self.execute_command(f"input text '{comment}'")
+            comment = comment.replace(" ", "%s")
+            comment = comment.replace("'", "")
+            comment = comment.replace("’", "")
+            comment = comment.replace("!", "")
+            print(comment, 'commentttt')
+            self.execute_command(f'input text "{comment}"')
             time.sleep(3)
             
+            # press back
             self.execute_command(f"input tap 870 2300")
 
             time.sleep(1)
-            self.execute_command(f"input tap 540 1600")
+
+            # press submit
+            self.execute_command(f"input tap 540 1650")
 
             time.sleep(2)
             return True
@@ -196,7 +203,6 @@ class HingeAutomator(AndroidDeviceConnector):
                 return False
             
             # Convert bytearray to PIL Image
-            from io import BytesIO
             screenshot = Image.open(BytesIO(screenshot_data))
             screenshot.save("data/1/screenshot.png")
             

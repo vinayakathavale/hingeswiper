@@ -49,7 +49,7 @@ def main():
     # Example: Perform some likes with comments
     try:
         # Perform 5 likes with comments
-        for i in range(1):
+        for i in range(20):
             print(f"\nProcessing profile {i+1}...")
             
             # Like and comment using GPT-4 Vision
