@@ -49,8 +49,13 @@ def main():
     # Example: Perform some likes with comments
     try:
         # Perform 5 likes with comments
-        for i in range(20):
+        for i in range(100):
             print(f"\nProcessing profile {i+1}...")
+            
+            # Check if we're still in Hinge app
+            if not automator.is_in_hinge_app():
+                print("No longer in Hinge app. Exiting...")
+                break
             
             # Like and comment using GPT-4 Vision
             if automator.like_and_comment():

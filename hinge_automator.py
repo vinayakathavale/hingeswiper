@@ -82,7 +82,7 @@ class HingeAutomator(AndroidDeviceConnector):
                         "content": [
                             {
                                 "type": "text",
-                                "text": "Analyze this Hinge profile and suggest a short, personalized, and flirty roast that would be memorable and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio. The roast should be playful, specific to their profile, and show flirtatious interest. Keep it concise (6-10 words). Only allowed punctuation is '!', ',', '.','?'"
+                                "text": "Analyze this Hinge profile and suggest a short, personalized, and flirty roast that would be memorable and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio, dont say generic shit about making her mine or anything like that. The roast should show flirtatious interest, something that women are more likely to respond to. Keep it concise (50-75 chars). Only allowed punctuation is '!', ',', '.','?"
                             },
                             {
                                 "type": "image_url",
@@ -181,7 +181,7 @@ class HingeAutomator(AndroidDeviceConnector):
             time.sleep(1)
 
             # press submit
-            self.execute_command(f"input tap 540 1650")
+            self.execute_command(f"input tap 540 1700")
 
             time.sleep(2)
             return True
@@ -240,4 +240,27 @@ class HingeAutomator(AndroidDeviceConnector):
             return True
         except Exception as e:
             self.logger.error(f"Error in like_and_comment: {e}")
+            return False
+    
+    def is_in_hinge_app(self) -> bool:
+        """Check if we're currently in the Hinge app"""
+        if not self.connected:
+            return False
+        
+        try:
+            # Get the current running app using dumpsys activity
+            output = self.execute_command("dumpsys activity top | grep ACTIVITY")
+            print(output, 'outputttt')
+            
+            # Split output into lines and get the last line
+            lines = output.strip().split('\n')
+            if not lines:
+                return False
+                
+            last_line = lines[-1]
+            print("Last line:", last_line)
+            
+            return self.HINGE_PACKAGE in last_line
+        except Exception as e:
+            self.logger.error(f"Error checking current app: {e}")
             return False 
