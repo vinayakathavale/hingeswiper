@@ -82,7 +82,11 @@ class HingeAutomator(AndroidDeviceConnector):
                         "content": [
                             {
                                 "type": "text",
-                                "text": "Analyze this Hinge profile and suggest a short, personalized, and flirty roast that would be memorable and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio, dont say generic shit about making her mine or anything like that. The roast should show flirtatious interest, something that women are more likely to respond to. Keep it concise (50-75 chars). Only allowed punctuation is '!', ',', '.','?"
+                                "text": """Analyze this Hinge profile and suggest a short, personalized, and flirty message that would be memorable 
+                                and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio,
+                                dont say generic shit about making her mine or if she can handle my ... or anything like that. 
+                                The message should show flirtatious interest, something that women are more likely to respond to. 
+                                Keep it concise (60-75 chars). Do not use any punctuation other than ',', '.','?' """
                             },
                             {
                                 "type": "image_url",
@@ -171,6 +175,7 @@ class HingeAutomator(AndroidDeviceConnector):
             comment = comment.replace("'", "")
             comment = comment.replace("’", "")
             comment = comment.replace("!", "")
+            comment = comment.replace("-", "%s")
             print(comment, 'commentttt')
             self.execute_command(f'input text "{comment}"')
             time.sleep(3)
