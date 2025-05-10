@@ -268,4 +268,59 @@ class HingeAutomator(AndroidDeviceConnector):
             return self.HINGE_PACKAGE in last_line
         except Exception as e:
             self.logger.error(f"Error checking current app: {e}")
-            return False 
+            return False
+
+    def analyze_chat(self, screenshot) -> Optional[list[str]]:
+        """Analyze chat screenshot and suggest 5 replies using GPT-4 Vision"""
+        try:
+            # Convert PIL Image to PNG bytes
+            img_byte_arr = BytesIO()
+            screenshot.save(img_byte_arr, format='PNG')
+            img_byte_arr = img_byte_arr.getvalue()
+            
+            # Use OpenAI Vision to analyze the chat
+            base64_image = base64.b64encode(img_byte_arr).decode('utf-8')
+
+            response = self.openai_client.chat.completions.create(
+                model="gpt-4.1-mini",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": """Analyze this Hinge chat conversation and suggest 5 different natural, engaging replies. 
+                                Each reply should be:
+                                1. Contextually relevant to the conversation
+                                2. Flirty but not overly sexual
+                                3. Show personality and humor
+                                4. Keep it concise (1-2 sentences max)
+                                5. End with a question to keep the conversation going
+                                
+                                Format the response as a numbered list (1-5) with each reply on a new line.
+                                Do not use any punctuation other than ',', '.', '?' """
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/png;base64,{base64_image}"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                max_tokens=500
+            )
+
+            # Split the response into individual replies
+            suggested_replies = response.choices[0].message.content.strip().split('\n')
+            # Clean up the replies (remove numbers and extra whitespace)
+            suggested_replies = [reply.strip().lstrip('12345. ') for reply in suggested_replies if reply.strip()]
+            
+            self.logger.info(f"Generated {len(suggested_replies)} suggested replies")
+            
+            return suggested_replies[:5]  # Ensure we only return 5 replies
+                
+        except Exception as e:
+            self.logger.error(f"Error analyzing chat: {e}")
+            return None
