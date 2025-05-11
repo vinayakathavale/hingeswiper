@@ -85,8 +85,8 @@ class HingeAutomator(AndroidDeviceConnector):
                                 "text": """Analyze this Hinge profile and suggest a short, personalized, and flirty message that would be memorable 
                                 and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio,
                                 dont say generic shit about making her mine or if she can handle my ... or anything like that. 
-                                The message should have an intent to flirt and should be something memorable and unique, the recipient would be women in their mid-late 20s 
-                                Keep it concise (60-75 chars). Do not use any punctuation other than ',', '.','?' """
+                                Make sure the message is memorable and unique, the recipient would be women in their mid-late 20s
+                                Keep it concise (60-80 chars). Do not use any punctuation other than ',', '.','?' """
                             },
                             {
                                 "type": "image_url",
