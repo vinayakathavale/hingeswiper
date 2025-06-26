@@ -86,7 +86,7 @@ class HingeAutomator(AndroidDeviceConnector):
                                 and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio,
                                 dont say generic shit about making her mine or if she can handle my ... or anything like that. 
                                 Make sure the message is memorable and unique, the recipient would be women in their mid-late 20s
-                                Keep it concise (10-18 chars). Do not use any punctuation other than ',', '.','?' """
+                                Make sure you dont generate more than 15 characters. Do not use any punctuation other than ',', '.','?' """
                             },
                             {
                                 "type": "image_url",
