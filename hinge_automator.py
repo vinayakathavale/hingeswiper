@@ -76,6 +76,7 @@ class HingeAutomator(AndroidDeviceConnector):
 
             response = self.openai_client.chat.completions.create(
                 model="gpt-4.1-mini",
+                max_tokens=8,
                 messages=[
                     {
                         "role": "user",
@@ -84,9 +85,8 @@ class HingeAutomator(AndroidDeviceConnector):
                                 "type": "text",
                                 "text": """Analyze this Hinge profile and suggest a short, personalized, and flirty message that would be memorable 
                                 and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio,
-                                dont say generic shit about making her mine or if she can handle my ... or anything like that. 
                                 Make sure the message is memorable and unique, the recipient would be women in their mid-late 20s
-                                Make sure you dont generate more than 15 characters. Do not use any punctuation other than ',', '.','?' """
+                                Make sure you dont generate more than 20 characters. Do not use any punctuation other than ',', '.','?' """
                             },
                             {
                                 "type": "image_url",
@@ -97,7 +97,6 @@ class HingeAutomator(AndroidDeviceConnector):
                         ]
                     }
                 ],
-                max_tokens=150
             )
 
             suggested_comment = response.choices[0].message.content.strip()
@@ -186,7 +185,7 @@ class HingeAutomator(AndroidDeviceConnector):
             time.sleep(1)
 
             # press submit
-            self.execute_command(f"input tap 540 1650")
+            self.execute_command(f"input tap 540 1700")
 
             time.sleep(2)
             return True
