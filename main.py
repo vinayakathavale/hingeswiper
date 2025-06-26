@@ -71,11 +71,12 @@ def chat_mode(automator):
     except KeyboardInterrupt:
         print("\nExiting chat mode...")
 
+
 def swipe_mode(automator):
     """Handle swipe mode - like and comment on profiles"""
     try:
         # Perform likes with comments
-        for i in range(100):
+        for i in range(1000):
             print(f"\nProcessing profile {i+1}...")
             
             # Check if we're still in Hinge app
@@ -90,7 +91,7 @@ def swipe_mode(automator):
                 print("Failed to like and comment on profile")
             
             # Wait a bit before the next profile
-            time.sleep(random.uniform(3, 5))
+            time.sleep(random.uniform(2, 4))
     
     except KeyboardInterrupt:
         print("\nStopping automation...")

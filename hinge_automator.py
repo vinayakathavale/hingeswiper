@@ -86,7 +86,7 @@ class HingeAutomator(AndroidDeviceConnector):
                                 and out of the norm. Look for quirky or amusing details in their photos, prompts, and bio,
                                 dont say generic shit about making her mine or if she can handle my ... or anything like that. 
                                 Make sure the message is memorable and unique, the recipient would be women in their mid-late 20s
-                                Keep it concise (60-80 chars). Do not use any punctuation other than ',', '.','?' """
+                                Keep it concise (10-18 chars). Do not use any punctuation other than ',', '.','?' """
                             },
                             {
                                 "type": "image_url",
@@ -186,7 +186,7 @@ class HingeAutomator(AndroidDeviceConnector):
             time.sleep(1)
 
             # press submit
-            self.execute_command(f"input tap 540 1800")
+            self.execute_command(f"input tap 540 1650")
 
             time.sleep(2)
             return True
